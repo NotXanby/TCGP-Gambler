@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <!-- Faz o site se comportar como um App no celular -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>TCGP Gambler</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* Estilo do Pop-up overlay (fixo no centro da tela) */
+        .popup {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #121212; /* Fundo escuro direto, sem transparência */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .popup-card {
+            background: #1e1e1e;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .resultado-num { font-size: 72px; font-weight: bold; color: #00ff88; }
+        .resultado-dir { font-size: 32px; font-weight: 500; margin: 10px 0 25px; color: #ffcc00; }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #ff3b30;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- O POP-UP DIRETO NA TELA -->
+    <div id="meuPopup" class="popup">
+        <div class="popup-card">
+            <div class="resultado-num" id="popNumero">0</div>
+            <div class="resultado-dir" id="popDirecao">DIREÇÃO</div>
+            <!-- O botão fechar agora apenas atualiza a página para gerar um novo número -->
+            <button onclick="reiniciarSorteio()">Sortear de Novo</button>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURAÇÕES DO RANGE FIXO NO CÓDIGO
+        let min = 0;   // Mude para o valor mínimo que você quer
+        let max = 15; // Mude para o valor máximo que você quer
+        
+        // DEFINA SEU NÚMERO "X" AQUI (Exemplo: número 7)
+        let numeroEspecial = 0; 
+
+        function gerarPopup() {
+            // Lógica do Range Aleatório (Inteiro)
+            let numeroAleatorio = Math.floor(Math.random() * (max - min + 1)) + min;
+            
+            // Injeta o número no Pop-up
+            document.getElementById('popNumero').innerText = numeroAleatorio;
+            
+            // Condicional para a Direção
+            if (numeroAleatorio === numeroEspecial) {
+                document.getElementById('popDirecao').innerText = ""; 
+            } else {
+                let direcoes = ["Esquerda", "Direita"];
+                let direcaoAleatoria = direcoes[Math.floor(Math.random() * direcoes.length)];
+                document.getElementById('popDirecao').innerText = direcaoAleatoria;
+            }
+        }
+
+        function reiniciarSorteio() {
+            // Recarrega a página para rodar o sorteio automático de novo
+            window.location.reload();
+        }
+
+        // Executa o sorteio assim que a página abre
+        window.onload = gerarPopup;
+    </script>
+</body>
+</html>
